@@ -1,0 +1,23 @@
+import java.util.*;
+class Main {
+  public static void main(String[] args) {
+    Scanner scan = new Scanner(System.in);
+
+    int inp = scan.nextInt();
+    String num1 = scan.next();
+      // OR Line 7 전에 String num1 = scan.nextLine(); 을 한 번 더 넣어주자. 
+      // nextLine은 enter을 기준으로 가져옴, 그런데 nextInt에서 숫자 + enter에서
+      // 숫자만 가져오기 때문에 \n(enter)가 그대로 nextLine에서 받아버리고 끝남
+      // 즉, \n를 한 번 더 받고 nextLine을 쓰던가, 개행문자(ex,\n)를 받지 않는 next를 써야함
+    int sum = 0;
+
+
+    for(int i = 0; i < inp; i++) {
+      sum = sum + (num1.charAt(i) - '0');
+    }
+
+    System.out.println(sum);
+
+
+  }
+}
