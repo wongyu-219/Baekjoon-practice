@@ -1,0 +1,44 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+    List<List<Object>> mixedList = new ArrayList<>(); // 2차원 List
+    
+    StringTokenizer st;
+
+    for(int i = 0; i < num; i++) {
+      List<Object> list1 = new ArrayList<>();
+      st = new StringTokenizer(br.readLine());
+      list1.add(Integer.parseInt(st.nextToken()));
+      list1.add(st.nextToken()); // " " 기준으로 나눔
+      mixedList.add(list1);
+    }
+
+    Collections.sort(mixedList, new Comparator<List<Object>>() { // List 정렬 Collections.sort
+      public int compare(List<Object> list1, List<Object> list2) {
+        int age1 = (int)list1.get(0);
+        int age2 = (int)list2.get(0); // list 인자 받는 법 List.get() + 형 변환 필요 !
+
+        return Integer.compare(age1, age2);
+      }
+    });
+
+    StringBuilder sb = new StringBuilder();
+
+    for(int i = 0; i < num; i++) {
+      sb.append(mixedList.get(i).get(0)).append(" ").append(mixedList.get(i).get(1)).append('\n');
+    } // 2차원 다 받으려면 List.get().get()
+    System.out.println(sb);
+    
+  }
+}
