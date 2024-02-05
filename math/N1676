@@ -1,0 +1,32 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+
+class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+    int cnt = 0;
+
+    for(int i = 1; i <= num; i++) {
+      if(i%5 == 0) {
+        cnt++; 
+        if(i%25 == 0) {
+          cnt++;
+          if(i%125 == 0) {
+            cnt++;
+          }
+        }
+      }
+    }
+    System.out.println(cnt);
+
+    
+  }
+}
+//팩토리얼에서 0의 개수는 10이 몇개 들어있는지 유무이다
+//10 = 2*5 즉 2*5 쌍이 몇개들어있는지 구하는 문제
+//팩토리얼은 연속된 수를 곱하는 것이므로 2의 개수가 5의 개수보다 적을 수 없음
+//즉 5의 개수만 새면 됨
