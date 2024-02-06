@@ -1,0 +1,63 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Queue;
+import java.util.LinkedList;
+
+class queue {
+  int idx;
+  int prior;
+
+  queue(int idx, int prior) {
+    this.idx = idx;
+    this.prior = prior;
+  }
+  
+}
+class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine()); // testcase 개수
+    
+    for(int i = 0; i < num; i++) {
+      String str = br.readLine();
+      String[] inp = str.split(" ");
+      int docNum = Integer.parseInt(inp[0]); // 문서 개수
+      int findIdx = Integer.parseInt(inp[1]);// 궁금한 문서의 index
+      Queue<queue> que = new LinkedList<>();
+      String str1 = br.readLine();
+      String[] inp1 = str1.split(" ");
+
+      for(int j = 0; j < docNum; j++) {
+        int priority = Integer.parseInt(inp1[j]);
+        que.offer(new queue(j, priority));
+      } // 큐 채우기
+      int cnt = 0;
+      
+      while(!que.isEmpty()) {
+        queue now = que.poll(); // 큐의 첫번째 수를 빼고 저장
+        boolean isMax = true;
+        for(queue k : que) {
+          if(k.prior > now.prior) {
+            isMax = false;
+            break;
+          }
+        } // 그 수가 최댓값인지 확인 (우선순위가 가장 높은지)
+        if(!isMax) {
+          que.offer(now);
+        }// 최댓값이 아니면 뒤로 추가
+        else {
+          cnt++;
+          if(now.idx == findIdx) {
+            System.out.println(cnt);
+            break;
+          }
+        }
+      }
+      
+    }
+
+    
+  }
+}
