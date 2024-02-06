@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Queue;
+import java.util.LinkedList;
+class Main {
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+    Queue<Integer> que = new LinkedList<>();
+
+    for(int i = 0; i < num; i++) {
+      String inp = br.readLine();
+      String[] inp1 = inp.split(" ");
+
+      switch(inp1[0]) {
+        case "push" :
+          que.offer(Integer.parseInt(inp1[1]));
+          break;
+
+        case "pop" :
+          if(que.isEmpty()) {
+            System.out.println("-1");
+          }
+          else {
+            int remove = que.poll();
+            System.out.println(remove);
+          }
+          break;
+
+        case "size" :
+          System.out.println(que.size());
+          break;
+        case "empty" :
+          if(que.isEmpty()) {
+            System.out.println("1");
+          } else {
+            System.out.println("0");
+          }
+          break;
+
+        case "front" :
+          if(que.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            System.out.println(que.peek());
+          }
+         
+          break;
+
+        case "back" :
+          if(que.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            System.out.println(((LinkedList<Integer>) que).getLast());
+          }
+          break;
+      }
+    }
+  }
+}
