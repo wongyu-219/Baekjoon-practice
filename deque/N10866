@@ -1,0 +1,69 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Deque;
+import java.util.LinkedList;
+
+class Main {
+  public static void main(String[] args) throws IOException{
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+
+    Deque<Integer> deq = new LinkedList<>();
+
+    for(int i = 0; i < num; i++) {
+      String str = br.readLine();
+      String[] inp = str.split(" ");
+
+      switch(inp[0]) {
+        case "push_front" :
+          deq.offerFirst(Integer.parseInt(inp[1]));
+          break;
+        case "push_back" :
+          deq.offerLast(Integer.parseInt(inp[1]));
+          break;
+        case "pop_front" :
+          if(deq.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            int pop_front = deq.pollFirst();
+            System.out.println(pop_front);
+          }
+          break;
+        case "pop_back" :
+          if(deq.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            int pop_back = deq.pollLast();
+            System.out.println(pop_back);
+          }
+          break;
+        case "size" :
+          System.out.println(deq.size());
+          break;
+        case "empty" :
+          if(deq.isEmpty()) {
+            System.out.println("1");
+          } else {
+            System.out.println("0");
+          }
+          break;
+        case "front" :
+          if(deq.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            System.out.println(deq.peekFirst());
+          }
+          break;
+        case "back" :
+          if(deq.isEmpty()) {
+            System.out.println("-1");
+          } else {
+            System.out.println(deq.peekLast());
+          }
+          break;
+      }
+    }
+  }
+}
