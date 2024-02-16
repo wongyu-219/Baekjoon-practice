@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+// import java.util.Arrays;
+
+class Main {
+  static int[] dp;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+    dp = new int[num+4];//배열의 인덱스가 0부터 시작하므로, dp[1], dp[2], dp[3]을 사용하려면 배열의 크기를 num + 4로 설정해야 합니다. 이렇게 하면 dp[1], dp[2], dp[3]이 배열의 유효한 인덱스로 포함되어 있게 됩니다. 만약 배열의 크기를 num + 3으로 설정하면 dp[3]까지만 유효한 인덱스가 되어 문제가 발생할 수 있습니다.
+
+   // 따라서, 배열의 크기를 num + 4로 설정하여 dp[0], dp[1], dp[2], dp[3]까지의 유효한 인덱스를 포함하도록 한 것입니다.
+
+    
+    // Arrays.fill(dp, -1); // -1로 초기화
+    dp[0] = 0;
+    dp[1] = 0;
+    dp[2] = 1;
+    dp[3] = 1;
+    
+
+    for(int i = 4; i <= num; i++) {
+      dp[i] = 1 + dp[i - 1];
+      if(i % 2 == 0) {
+        dp[i] = Math.min(dp[i], 1 + dp[i / 2]);
+      } 
+      if(i % 3 == 0) {
+        dp[i] = Math.min(dp[i], 1 + dp[i / 3]);
+      }
+    }
+    System.out.println(dp[num]);
+
+    // System.out.println(makeOne(num));
+
+    
+  }
+  /*static int makeOne(int n) {
+    if(n == 1) {
+      return 0;
+    } 
+    if(dp[n] != -1) {
+      return dp[n]; // 기존 계산을 했다면 그 값 반환
+    }
+    dp[n] = 1 + makeOne(n - 1); // 기본값은 1을 뺀 것으로 설정
+
+    if(n % 2 == 0) {
+      dp[n] = Math.min(dp[n], 1 + makeOne(n / 2));
+    }
+    if(n % 3 == 0) {
+      dp[n] = Math.min(dp[n], 1 + makeOne(n / 3));// 누적계산? 6으로 나눌때 대비
+    }
+    return dp[n];
+  } */
+}
