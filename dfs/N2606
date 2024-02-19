@@ -1,0 +1,61 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Stack;
+
+
+class Main {
+  static ArrayList<ArrayList<Integer>> graph = new ArrayList<ArrayList<Integer>>(); 
+  
+  public static void main(String[] args) throws IOException {
+    
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int num = Integer.parseInt(br.readLine());
+    boolean[] visited = new boolean[num + 1] ;
+    int cnt = 0;
+    for(int i = 0; i <= num; i++) { // 리스트 역시 index를 통한 접근을 하므로 1부터 num까지 초기화를 해주려면 i<=num으로 설정해야함
+      graph.add(new ArrayList<Integer>());
+    }//리스트 초기화
+    int pair = Integer.parseInt(br.readLine());
+    for(int i = 0; i < pair; i++) {
+      String str = br.readLine();
+      String[] input = str.split(" ");
+      int u = Integer.parseInt(input[0]);
+      int v = Integer.parseInt(input[1]);
+
+      graph.get(u).add(v);//u인덱스에 v 추가
+      graph.get(v).add(u);//v인덱스에 u 추가
+      //즉 인접하는 node 추가하는 작업임
+    }
+    dfs(1, visited);
+    for(boolean visit : visited) {
+      if(visit) {
+        cnt++;
+      }
+    }
+    System.out.println(cnt - 1);
+    
+  }
+
+  static void dfs(int point, boolean[] visited) {
+    //stack을 사용한 dfs
+    Stack<Integer> stack = new Stack<>();
+    stack.push(point);
+
+    while(!stack.isEmpty()) {
+      int cur = stack.pop();
+      if(visited[cur]) {
+        continue;
+      }
+
+      visited[cur] = true;
+      for(int neighbor : graph.get(cur)) {
+        if(!visited[neighbor]) {
+          stack.push(neighbor);
+        }
+      }
+    }
+  }
+}
