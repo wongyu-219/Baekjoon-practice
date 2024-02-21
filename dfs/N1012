@@ -1,0 +1,76 @@
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Stack;
+
+
+class Main {
+  static int[] dx = {1, -1, 0, 0};
+  static int[] dy = {0, 0, 1, -1};
+  static int m;//가로
+  static int n;//세로
+  static int k;//심어진 배추 개수
+  static int[][] arr;
+  static boolean[][] visited;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int num = Integer.parseInt(br.readLine());
+    
+    for(int i = 0; i < num; i++) {
+      String str = br.readLine();
+      String[] input = str.split(" ");
+      m = Integer.parseInt(input[0]);
+      n = Integer.parseInt(input[1]);
+      k = Integer.parseInt(input[2]);
+      int cnt = 0;
+      arr = new int[m][n];
+      visited = new boolean[m][n];
+      for(int j = 0; j < k; j++) {
+        String str1 = br.readLine();
+        String[] input1 = str1.split(" ");
+        int a = Integer.parseInt(input1[0]);
+        int b = Integer.parseInt(input1[1]);
+        arr[a][b] = 1;//배추 위치 받기
+      }
+      for(int j = 0; j < m; j++) {
+        for(int l = 0; l < n; l++) {
+          if(!visited[j][l] && arr[j][l] == 1) {
+            dfs(j, l);
+            cnt++;
+          }
+        }
+      }
+      System.out.println(cnt);
+    }
+    
+  }
+  static void dfs(int x, int y) {
+    Stack<point> stack = new Stack<>();
+    stack.push(new point(x, y));//stack을 사용해 dfs로 접근
+    visited[x][y] = true;
+
+    while(!stack.empty()) {
+      point cur = stack.pop();
+      for(int i = 0; i < 4; i++) {
+        int nextX = cur.x + dx[i];
+        int nextY = cur.y + dy[i];
+
+        if(nextX >= 0 && nextY >= 0 && nextX < m && nextY < n && !visited[nextX][nextY] && arr[nextX][nextY] == 1) {
+          stack.push(new point(nextX, nextY));
+          visited[nextX][nextY] = true;
+        }
+      }
+    }
+  }
+}
+class point {//좌표 클래스 이용
+  int x;
+  int y;
+
+
+  point(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+}
