@@ -1,0 +1,83 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Queue;
+import java.util.LinkedList;
+
+class Main {
+  static int n;
+  static int m;
+  static int v;
+  static ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+  static boolean[] visitedBfs;
+  static boolean[] visitedDfs;
+  static StringBuilder sb;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String str = br.readLine();
+    String[] input = str.split(" ");
+    n = Integer.parseInt(input[0]);
+    m = Integer.parseInt(input[1]);
+    v = Integer.parseInt(input[2]);
+
+    visitedBfs = new boolean[n+2];
+    visitedDfs = new boolean[n+2];
+
+    for(int i = 0; i <= n; i++) {
+      list.add(new ArrayList<Integer>());
+    }//리스트 초기화
+
+    for(int i = 0; i < m; i++) {
+      str = br.readLine();
+      String[] input1 = str.split(" ");
+      int a = Integer.parseInt(input1[0]);
+      int b = Integer.parseInt(input1[1]);
+      list.get(a).add(b);
+      list.get(b).add(a);
+    }
+    for(ArrayList<Integer> sub : list) {
+      Collections.sort(sub);
+    }
+    
+    sb = new StringBuilder();
+    dfs(v);
+    System.out.println(sb);
+    sb = new StringBuilder();
+    bfs(v);
+    System.out.println(sb);
+    
+  }
+  static void dfs(int start) {
+    visitedDfs[start] = true;
+    sb.append(start).append(" ");
+    for(int i = 0; i < list.get(start).size(); i++) {
+      int next = list.get(start).get(i);
+      if(!visitedDfs[next]) {
+        dfs(next);
+      }
+    }
+  }// 그냥 하면 되긴 하는데 문제는 양방향일때 어떻게 거를 것인가 Ans : 노드 번호로 boolean배열 만들어서 ㄱㄱ
+
+  static void bfs(int start) {
+    Queue<Integer> queue = new LinkedList<>();
+    queue.add(start);
+  
+    
+    
+    while(!queue.isEmpty()) {
+      int k = queue.poll();
+      sb.append(k).append(" ");
+      visitedBfs[k] = true;
+      for(int i = 0; i < list.get(k).size(); i++) {
+        int next = list.get(k).get(i);
+        if(!visitedBfs[next]) {
+          queue.add(next);
+          visitedBfs[next] = true;
+        }
+      }
+    }
+    
+  }
+}
