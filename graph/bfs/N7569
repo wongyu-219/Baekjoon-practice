@@ -1,0 +1,141 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+class Main {
+  static int[][][] arr; // 토마토 상자
+  static boolean[][][] visited;
+  static int m;// 가로
+  static int n;// 세로
+  static int h;// 높이
+  static int cnt = 0;// 일수
+  static int[] dx = { 1, -1, 0, 0, 0, 0 };
+  static int[] dy = { 0, 0, 1, -1, 0, 0 };
+  static int[] dz = { 0, 0, 0, 0, 1, -1 };// 변화량
+
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    m = Integer.parseInt(st.nextToken());
+    n = Integer.parseInt(st.nextToken());
+    h = Integer.parseInt(st.nextToken());
+    /*String[] input = br.readLine().split(" ");
+
+    m = Integer.parseInt(input[0]);
+    n = Integer.parseInt(input[1]);
+    h = Integer.parseInt(input[2]);*/
+    arr = new int[h][n][m];
+    visited = new boolean[h][n][m];
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < n; j++) {
+        //String[] input1 = br.readLine().split(" ");
+        st = new StringTokenizer(br.readLine());
+        for (int k = 0; k < m; k++) {
+          arr[i][j][k] = Integer.parseInt(st.nextToken());
+        }
+      }
+    }
+
+    //inputArr(arr);
+    tomato(arr);
+    isZero(arr);
+    System.out.println(cnt);
+  }
+
+  /*static void inputArr(int[][][] arr) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < n; j++) {
+        //String[] input1 = br.readLine().split(" ");
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int k = 0; k < m; k++) {
+          arr[i][j][k] = Integer.parseInt(st.nextToken());
+        }
+      }
+    }
+  }*/
+
+  static void tomato(int[][][] arr) { // 이제 예외처리 익을 수 없을때 해야함
+    boolean isAllDone = true;
+
+    Queue<point> queue = new LinkedList<>();
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < n; j++) {
+        for (int k = 0; k < m; k++) {
+          if (arr[i][j][k] == 1 && !visited[i][j][k]) {
+            queue.add(new point(i, j, k));
+            visited[i][j][k] = true;
+          }
+        }
+      }
+    }
+    
+      for (int i = 0; i < h; i++) {
+        for (int j = 0; j < n; j++) {
+          for (int k = 0; k < m; k++) {
+            if (arr[i][j][k] == 0) {
+             isAllDone = false;
+              break;
+            }
+          }
+        }
+      }
+    
+    if(!isAllDone) {// 다 익었을 때 예외처리 
+      while (!queue.isEmpty()) {
+        boolean isTomatoDone = false;
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+          point k = queue.poll();
+          for (int j = 0; j < 6; j++) {
+            int nextX = dx[j] + k.x;
+            int nextY = dy[j] + k.y;
+            int nextZ = dz[j] + k.z;
+            if (nextX >= 0 && nextX < m && nextY >= 0 && nextY < n && nextZ >= 0 && nextZ < h
+                && !visited[nextZ][nextY][nextX] && arr[nextZ][nextY][nextX] == 0) {
+              arr[nextZ][nextY][nextX] = 1;
+              queue.add(new point(nextZ, nextY, nextX));
+              visited[nextZ][nextY][nextX] = true;
+              isTomatoDone = true;
+            }
+          }
+        }
+        if(isTomatoDone) {
+          cnt++;// 이 조건문이 없으면 마지막에 한번 더 세기때문에 조건 추가해야함
+        }
+      }
+    }
+
+  }
+
+  static void isZero(int[][][] arr) {// 익을 수 없을 때
+    boolean isZero = false;
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < n; j++) {
+        for (int k = 0; k < m; k++) {
+          if (arr[i][j][k] == 0) {
+            isZero = true;
+        }
+      }
+    }
+  }
+    if(isZero) {
+      cnt = -1;
+    }
+ }
+}
+
+class point {
+  int x;// 가로
+  int y;// 세로
+  int z;// 높이
+
+  point(int z, int y, int x) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+}
