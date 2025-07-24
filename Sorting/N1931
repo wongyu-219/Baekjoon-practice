@@ -1,0 +1,53 @@
+//N1931
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+// The main method must be in a class named "Main".
+class Main {
+    public static class Meeting implements Comparable<Meeting> {
+        int start;
+        int end;
+
+        Meeting(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public int compareTo(Meeting o) {
+            if(this.end == o.end) {
+                return this.start - o.start;
+            }
+            return this.end - o.end;
+        } // sort(null) 정렬 기준 만들기
+    } // 회의 시간 클래스를 만들어서 시작, 끝 시간 저장 ---- 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = br.readLine();
+        int num = Integer.parseInt(str);
+        List<Meeting> meet = new ArrayList<>();
+        for(int i = 0; i < num; i++) {
+            str = br.readLine();
+            String[] tokens = str.split(" ");
+            int num1 = Integer.parseInt(tokens[0]);
+            int num2 = Integer.parseInt(tokens[1]);
+            meet.add(new Meeting(num1, num2));
+        }
+        meet.sort(null);
+        int result = maxmeet(meet);
+        System.out.println(result);
+    }
+    public static int maxmeet(List<Meeting> meet) {
+        int result = 1;
+        
+        int t = meet.get(0).end;
+        for(int i = 1; i < meet.size(); i++) {
+            int k = meet.get(i).start;
+            if(t <= k) {
+                t = meet.get(i).end;
+                result++;
+            } 
+        }
+        return result;
+    }
+}
